@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <!--    <link rel="stylesheet" href="static/assets/tax_invoice.css">-->
+    <title>{{invoice_data.invoice_title}}</title>
+</head>
+
+<body>
+<div class="invoice_wrap">
+    <table class="header">
+        <tbody>
+        <tr>
+            <td>
+                <img alt="logo" src="{% static 'assets/new-logo-yellow.png' %}"/>
+                <h2>Nupa Technologies Private Limited</h2>
+                <p>Shri Ram Market, Ram Chandrapur<br>
+                    Oppsoite Big Bazar Bihar Sharif, 803101<br>
+                    India<br>
+                    GSTIN: 10AAFCN8547D1ZP</p>
+            </td>
+            <td style="text-align:center; border-left: 0;">
+                <h1>{{invoice_data.invoice_type}}</h1>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>#Invoice No:<strong>&nbsp;{{invoice_data.invoice_number}}</strong><br>
+                    Invoice Date:<strong>&nbsp;{{invoice_data.invoice_date}}</strong><br>
+                    Terms:<strong>&nbsp;{{invoice_data.terms}}</strong><br>
+                    Due Date:<strong>&nbsp;{{invoice_data.due_date}}</strong></p>
+            </td>
+            <td>
+                <p>Place of Supply:<strong>&nbsp;{{invoice_data.place_of_supply}}</strong></p>
+            </td>
+        </tr>
+        <tr>
+            <td class="bill_info">
+                <p>Bill To</p>
+            </td>
+            <td class="bill_info">
+                <p>Ship To</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p><strong>{{invoice_data.billing_address.firm_name}}</strong><br><br>
+                    {% if invoice_data.billing_address.line1 %}
+                        {{invoice_data.billing_address.line1}}<br>
+                    {% endif %}
+                    {% if invoice_data.billing_address.line2 %}
+                        {{invoice_data.billing_address.line2}}<br>
+                    {% endif %}
+                    {% if invoice_data.billing_address.line3 %}
+                        {{invoice_data.billing_address.line3}}<br>
+                    {% endif %}
+                    {{invoice_data.billing_address.city}},
+                    {% if invoice_data.billing_address.state %}
+                        {{invoice_data.billing_address.state}}
+                    {% endif %}
+                    {% if invoice_data.billing_address.pincode %}
+                        {{invoice_data.billing_address.pincode}}
+                    {% endif %}<br>
+                    {% if invoice_data.billing_address.country %}
+                        {{invoice_data.billing_address.country}}<br>
+                    {% endif %}
+                    {% if invoice_data.billing_address.gst_no %}
+                        GSTIN:{{invoice_data.billing_address.gst_no}}
+                    {% endif %}
+                </p>
+
+            </td>
+            <td>
+                <p><strong>{{invoice_data.shipping_address.firm_name}}</strong><br><br>
+                    {% if invoice_data.shipping_address.line1 %}
+                        {{invoice_data.shipping_address.line1}}<br>
+                    {% endif %}
+                    {% if invoice_data.shipping_address.line2 %}
+                        {{invoice_data.shipping_address.line2}}<br>
+                    {% endif %}
+                    {% if invoice_data.shipping_address.line3 %}
+                        {{invoice_data.shipping_address.line3}}<br>
+                    {% endif %}
+                    {{invoice_data.shipping_address.city}},
+                    {% if invoice_data.shipping_address.state %}
+                        {{invoice_data.shipping_address.state}}
+                    {% endif %}
+                    {% if invoice_data.shipping_address.pincode %}
+                    {{invoice_data.shipping_address.pincode}}{% endif %}<br>
+                    {% if invoice_data.shipping_address.country %}
+                        {{invoice_data.shipping_address.country}}<br>
+                    {% endif %}
+                    {% if invoice_data.shipping_address.gst_no %}
+                        GSTIN:{{invoice_data.shipping_address.gst_no}}
+                    {% endif %}
+                </p>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <table class="item_table">
+        <tbody>
+        <tr class="headings">
+            <td rowspan="2">#</td>
+            <td rowspan="2">Item&amp;Description</td>
+            <td rowspan="2">HSN/SAC</td>
+            <td rowspan="2">SKU Type</td>
+            <td rowspan="2">Qty.</td>
+            <td rowspan="2">SKU Rate</td>
+            <td colspan="2">CGST</td>
+            <td colspan="2">SGST</td>
+            <td rowspan="2">Amount</td>
+        </tr>
+        <tr class="headings">
+            <td>%</td>
+            <td>Amt.</td>
+            <td>%</td>
+            <td>Amt.</td>
+        </tr>
+        {% for purchase_detail in invoice_data.purchase_details %}
+        <tr>
+            <td>{{ forloop.counter }}.</td>
+            <td>{{purchase_detail.item_description}}</td>
+            <td>{{purchase_detail.hsn_sac}}</td>
+            <td>{{purchase_detail.sku_type}}</td>
+            <td>{{purchase_detail.quantity}}</td>
+            <td>{{purchase_detail.sku_rate}}</td>
+            <td>0%</td>
+            <td>0.00</td>
+            <td>0%</td>
+            <td>0.00</td>
+            <td>{{purchase_detail.amount}}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <table class="footer">
+        <tbody>
+
+        <tr>
+            <td colspan="2" rowspan="2" style="width: 50%; border-bottom: 0; padding-left: 2rem;">
+                <p>Total In Words<br>
+                    <strong>Rupees {{invoice_data.total_in_words}} Only</strong><br><br>
+                    Thanks for your business.<br><br>
+                    Terms & Conditions*<br><br>
+                    <strong>Bank Details:</strong><br>
+                    Acc Name: NUPA Technologies Pvt Ltd.<br>
+                    Acc No.:002105024178<br>
+                    IFSC Code: ICIC0000021
+                </p>
+            </td>
+            <td class="amount_details" colspan="4">
+                <p>Sub Total &nbsp;&nbsp;&nbsp;{{invoice_data.total_amount}}<br>
+                    CGST(0%)&nbsp;&nbsp;&nbsp;0.0<br>
+                    SGST(0%)&nbsp;&nbsp;&nbsp;0.0<br><br>
+                    <strong>Total&nbsp;&nbsp;&nbsp; {{invoice_data.total_amount}}</strong>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" style="text-align: center; padding-top: 2rem;">
+                <img alt="stamp and sign" src="{% static 'assets/new-logo-yellow.png' %}">
+                <br><br><br>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="6" style="border-top: 0;">
+                <br><br><br>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+
+</html>

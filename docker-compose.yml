@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    env_file:
+      - /home/ubuntu/eggoz_backend/eggoz.env
+    volumes:
+      - .:/Eggoz_Backend
+    ports:
+      - "8000:8000"
+
+  redis:
+    image: redis:alpine
+  celery:
+    restart: on-failure
+    build:
+      context: .
+    command: celery -A Eggoz worker -l info
+    volumes:
+      - .:/Eggoz_Backend
+    env_file:
+      - /home/ubuntu/eggoz_backend/eggoz.env
+    depends_on:
+      - redis
+      - web
+
+  celery-beat:
+    restart: on-failure
+    build:
+      context: .
+    command: celery -A Eggoz beat -l info
+    volumes:
+      - .:/Eggoz_Backend
+    env_file:
+      - /home/ubuntu/eggoz_backend/eggoz.env
+    depends_on:
+      - redis
+      - web

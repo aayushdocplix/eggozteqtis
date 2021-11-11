@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <link rel="stylesheet" href="static/assets/tax_invoice.css">
+    <title>{{order_id}}</title>
+    <style>
+        body{
+	font-size: small;
+	align-content: center;
+}
+@media print {
+  a::after {
+    content: " (" attr(href) ") ";
+  }
+  pre {
+    white-space: pre-wrap;
+  }
+  @page {
+    margin: 0.0in;
+    size: A4;
+    @top-right {
+      content: counter(page);
+    }
+  }
+  @page :first {
+    @top-right {
+      content: "";
+    }
+  }
+  }
+.header{
+	width: 100%;
+	border-collapse: collapse;
+	table-layout:fixed;
+	word-wrap: break-word;
+}
+
+.header tr td{
+	padding: 0.4rem;
+}
+
+.header tr td:first-child{
+	border-right: 0;
+}
+.tax_header{
+	border-left: 0;
+	padding: 2rem;
+}
+
+.invoice_wrap{
+border: 1px solid #000;
+margin: 2rem;
+width: 90%;
+}
+
+.item_table{
+	width: 100%;
+	border-collapse: collapse;
+	table-layout:fixed;
+	word-wrap: break-word;
+}
+
+.bill_info{
+	width: 50%;
+	padding: 0;
+	border-collapse: collapse;
+	background: #aaa9a9;
+}
+
+.item_table{
+	text-align: center;
+}
+
+.item_table table , td, th {
+	border: 1px solid #595959;
+	border-collapse: collapse;
+}
+
+.item_table td, th {
+	padding: 3px;
+	width: 30px;
+	height: 25px;
+}
+.item_table th {
+	background: #f0e6cc;
+}
+.even {
+	background: #fbf8f0;
+}
+.odd {
+	background: #fefcf9;
+}
+
+.headings{
+background: #aaa9a9;
+}
+
+.footer{
+	width: 100%;
+	padding-bottom: 5rem;
+	border-collapse: collapse;
+	page-break-after: avoid;
+}
+
+.amount_details{
+	text-align: left;
+	padding-left: 1.5rem;
+	padding-right:1.5rem;
+}
+.coolContainer h4:first-of-type {
+    float: left;
+}
+
+.coolContainer h4:last-of-type {
+    float: right;
+}
+    </style>
+</head>
+
+<body>
+<div class="invoice_wrap">
+    <div style="margin:25px">
+    <h2>{{order_id}}</h2>
+    <h3>Customer Name : {{address.name}}</h3>
+    <h3>PhoneNo : {{address.phone_no}}</h3>
+    <h3>Slot : {{address.slot}}</h3>
+<!--    <h3>Delivery Guy : {{address.delivery_person}}</h3>-->
+    <h3>Address : {{address.address_name}}</h3>
+    <div style="margin:15px" class="coolContainer">
+        {% if address.building_address %}
+            <h4>{{address.building_address}}, </h4>
+        {% else %}
+
+        {% endif %}
+        {% if address.street_address %}
+        <h4>{{address.street_address}}, </h4>
+        {% else %}
+
+        {% endif %}
+        {% if address.landmark %}
+        <h4>{{address.landmark}}, </h4>
+        {% else %}
+
+        {% endif %}
+        <h4>{{address.locality}}, </h4>
+        <h4>{{address.city_name}} - </h4>
+        <h4>PinCode : {{address.pinCode}}.</h4>
+<!--        {% if address.building_address %}-->
+<!--            <h4>Building : {{address.building_address}},</h4>-->
+<!--        {% else %}-->
+<!--        -->
+<!--        {% endif %}-->
+<!--        {% if address.street_address %}-->
+<!--        <h4>Street : {{address.street_address}},</h4>-->
+<!--        {% else %}-->
+<!--        -->
+<!--        {% endif %}-->
+<!--        {% if address.landmark %}-->
+<!--        <h4>Landmark : {{address.landmark}},</h4>-->
+<!--        {% else %}-->
+<!--        -->
+<!--        {% endif %}-->
+<!--        <h4>City : {{address.city_name}},</h4>-->
+<!--        <h4>Locality : {{address.locality}},</h4>-->
+<!--        <h4>PinCode : {{address.pinCode}}.</h4>-->
+    </div>
+    </div>
+
+    <table class="item_table">
+        <tbody>
+        <tr class="headings">
+            <td rowspan="2">#</td>
+            <td rowspan="2">Item&amp;Description</td>
+            <td rowspan="2">HSN/SAC</td>
+            <td rowspan="2">SKU Type</td>
+            <td rowspan="2">Qty.</td>
+            <td rowspan="2">SKU Rate</td>
+            <td colspan="2">CGST</td>
+            <td colspan="2">SGST</td>
+            <td rowspan="2">Amount</td>
+        </tr>
+        <tr class="headings">
+            <td>%</td>
+            <td>Amt.</td>
+            <td>%</td>
+            <td>Amt.</td>
+        </tr>
+        {% for purchase_detail in purchase_details %}
+        <tr>
+            <td>{{ forloop.counter }}.</td>
+            <td>{{purchase_detail.item_description}}</td>
+            <td>{{purchase_detail.hsn_sac}}</td>
+            <td>{{purchase_detail.sku_type}}</td>
+            <td>{{purchase_detail.quantity}}</td>
+            <td>{{purchase_detail.sku_rate}}</td>
+            <td>0%</td>
+            <td>0.00</td>
+            <td>0%</td>
+            <td>0.00</td>
+            <td>{{purchase_detail.amount}}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <table class="footer">
+        <tbody>
+
+        <tr>
+            <td colspan="2" rowspan="2" style="width: 50%; border-bottom: 0; padding-left: 2rem;">
+                <p>Total In Words<br>
+                    <strong>Rupees {{order_total_in_words}} Only</strong><br><br>
+                    Thanks for your business.<br><br>
+                    Terms & Conditions*<br><br>
+                    <strong>Bank Details:</strong><br>
+                    Acc Name: NUPA Technologies Pvt Ltd.<br>
+                    Acc No.:921030017950386<br>
+                    IFSC Code: UTIB0000049
+                </p>
+            </td>
+            <td class="amount_details" colspan="4">
+                <p>Sub Total &nbsp;&nbsp;&nbsp;{{order_total_amount}}<br>
+                    CGST(0%)&nbsp;&nbsp;&nbsp;0.0<br>
+                    SGST(0%)&nbsp;&nbsp;&nbsp;0.0<br><br>
+                    <strong>Total&nbsp;&nbsp;&nbsp; {{order_total_amount}}</strong>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" style="text-align: center; padding-top: 2rem;">
+                <img alt="stamp and sign" src="https://eggoz-android.s3.ap-south-1.amazonaws.com/EggProduct/yellow_logo.png">
+                <br><br><br>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="6" style="border-top: 0;">
+                <br><br><br>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+</body>
+
+</html>
