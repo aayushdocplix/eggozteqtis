@@ -14,7 +14,7 @@ from custom_auth.tasks import send_sms_message
 from custom_auth.views import GenerateKey
 from warehouse.models import Driver
 from .models import BatchModel, BatchPerWarehouse, EggsIn, EggQualityCheck, EggCleaning, Package, \
-    ReturnedPackage, Procurement, ImageUpload, MovetoUnbranded
+    ReturnedPackage, Procurement, ImageUpload
 from .serializers import BatchSerializer, BatchPerWarehouseSerializer, EggsInSerializers, \
     EggCleaningSerializer, EggQualityCheckSerializer, PackageSerializer, ReturnedPackageSerializer, \
     BatchCreateRequestSerializer, ImageUploadSerializer, ProcurementSerializer, BatchStockDetailSerializer, \
@@ -307,6 +307,8 @@ class BatchListView(APIView):
 
     @staticmethod
     def get_category_model_data(_status, _type):
+        import pdb
+        pdb.set_trace()
         try:
             _status_dict = {
                 'chatki': {
@@ -323,6 +325,8 @@ class BatchListView(APIView):
         try:
             _type = self.request.query_params.get('type', None)
             category = self.request.query_params.get('category', None)
+            import pdb
+            pdb.set_trace()
             if category:
                 result = self.get_category_model_data(category, _type)
             else:
@@ -338,17 +342,17 @@ class BatchListView(APIView):
                             status=status.HTTP_400_BAD_REQUEST)
 
 
-class MoveToUnbrandedView(APIView):
-    permission_classes = (permissions.AllowAny,)
-
-    def post(self, request, *args, **kwargs):
-        try:
-            data = request.data
-            serializer_data = MoveToUnbrandedSerializer(data=data, many=True)
-            if serializer_data.is_valid(raise_exception=True):
-                serializer_data.save()
-                return Response({'success': True, 'error': None, 'data': serializer_data}, status=status.HTTP_200_OK)
-
-        except Exception as e:
-            return Response({'success': False, 'error': e.args[0], 'data': None},
-                            status=status.HTTP_400_BAD_REQUEST)
+# class MoveToUnbrandedView(APIView):
+#     permission_classes = (permissions.AllowAny,)
+#
+#     def post(self, request, *args, **kwargs):
+#         try:
+#             data = request.data
+#             serializer_data = MoveToUnbrandedSerializer(data=data, many=True)
+#             if serializer_data.is_valid(raise_exception=True):
+#                 serializer_data.save()
+#                 return Response({'success': True, 'error': None, 'data': serializer_data}, status=status.HTTP_200_OK)
+#
+#         except Exception as e:
+#             return Response({'success': False, 'error': e.args[0], 'data': None},
+#                             status=status.HTTP_400_BAD_REQUEST)

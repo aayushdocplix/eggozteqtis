@@ -349,5 +349,5 @@ class BatchListSerializer(serializers.ModelSerializer):
 
 class MoveToUnbrandedSerializer(serializers.ModelSerializer):
     class Meta:
-        model = MovetoUnbranded
+        model = None
         fields = '__all__'

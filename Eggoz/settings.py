@@ -39,13 +39,13 @@ SECRET_KEY = open(os.path.join(BASE_DIR, 'secret_key.txt')).read().strip()
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 PROD_STATUS = env('PROD_STATUS', default=False)
-EGGOZ_ENV = env('EGGOZ_ENV', default="local")
+# EGGOZ_ENV = env('EGGOZ_ENV', default="local")
 PHONE_SMS_ON = env('PHONE_SMS_ON', default=False)
 
 # PROD_STATUS = True
 # DEBUG = False
 
-
+EGGOZ_ENV = "local"
 ALLOWED_HOSTS = ['*']
 
 # Application definition
