@@ -307,8 +307,6 @@ class BatchListView(APIView):
 
     @staticmethod
     def get_category_model_data(_status, _type):
-        import pdb
-        pdb.set_trace()
         try:
             _status_dict = {
                 'chatki': {
