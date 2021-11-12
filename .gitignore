@@ -54,5 +54,4 @@ lib/
 pyvenv.cfg
 celerybeat.pid
 celerybeat-schedule
-*.sqlite3
-db_test.sqlite3
+
