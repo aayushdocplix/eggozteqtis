@@ -325,8 +325,6 @@ class BatchListView(APIView):
         try:
             _type = self.request.query_params.get('type', None)
             category = self.request.query_params.get('category', None)
-            import pdb
-            pdb.set_trace()
             if category:
                 result = self.get_category_model_data(category, _type)
             else:
