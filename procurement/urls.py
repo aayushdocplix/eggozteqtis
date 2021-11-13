@@ -24,5 +24,5 @@ urlpatterns = [
     path('', include(router.urls)),
     path('farmer/search',DriverSearchView.as_view() ),
     path('batch-list', BatchListView.as_view(), name='batch-list'),
-    path('unbranded/', MoveToUnbrandedView.as_view(), name='unbranded')
+    path('unbranded', MoveToUnbrandedView.as_view(), name='unbranded')
 ]
