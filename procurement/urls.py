@@ -2,7 +2,7 @@ from django.urls import path, include
 from rest_framework import routers
 from procurement.views import ProcurementView, ProcurementPerWarehouseView, EggsInView, ImageUploadView, \
     EggCleaningView, EggQualityCheckView, PackageView, StockDetails, SendOtpView, VerifyOtpView, DriverSearchView, \
-    BatchListView
+    BatchListView, MoveToUnbrandedView
 
 app_name = "procurement"
 
@@ -24,5 +24,5 @@ urlpatterns = [
     path('', include(router.urls)),
     path('farmer/search',DriverSearchView.as_view() ),
     path('batch-list', BatchListView.as_view(), name='batch-list'),
-    # path('unbranded', MoveToUnbrandedView.as_view(), name='unbranded')
+    path('unbranded', MoveToUnbrandedView.as_view(), name='unbranded')
 ]

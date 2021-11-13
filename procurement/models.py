@@ -112,16 +112,16 @@ class ImageUpload(models.Model):
     created_at = models.DateTimeField(default=timezone.now,)
 
 
-# class MovetoUnbranded(models.Model):
-#     batch = models.OneToOneField(BatchModel, on_delete=models.DO_NOTHING, null=True)
-#     date = models.DateTimeField(default=timezone.now, null=False)
-#     egg_in = models.IntegerField(null=False, default=0)
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     updated_by = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True, blank=True)
-#     type = models.CharField(max_length=30, choices=UNBRANDED_TYPE, null=False, blank=False)
-#     is_active = models.BooleanField(default=True)
-#
-#
-# class UnbrandedRecord(models.Model):
-#     egg_in = models.IntegerField(null=False, default=0)
-#     egg_type = models.CharField(max_length=30, choices=EGG_TYPES, null=False, blank=False)
+class MovetoUnbranded(models.Model):
+    batch = models.OneToOneField(BatchModel, on_delete=models.DO_NOTHING, null=True)
+    date = models.DateTimeField(default=timezone.now, null=False)
+    egg_in = models.IntegerField(null=False, default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_by = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True, blank=True)
+    type = models.CharField(max_length=30, choices=UNBRANDED_TYPE, null=False, blank=False)
+    is_active = models.BooleanField(default=True)
+
+
+class UnbrandedRecord(models.Model):
+    egg_in = models.IntegerField(null=False, default=0)
+    egg_type = models.CharField(max_length=30, choices=EGG_TYPES, null=False, blank=False)

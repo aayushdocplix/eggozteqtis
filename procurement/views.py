@@ -321,6 +321,7 @@ class BatchListView(APIView):
 
     def get(self, request, *args, **kwargs):
         try:
+            serializer_data = []
             _type = self.request.query_params.get('type', None)
             category = self.request.query_params.get('category', None)
             if category:
@@ -330,25 +331,24 @@ class BatchListView(APIView):
             if result:
                 batch_obj = BatchModel.objects.filter(id__in=result)
                 serializer_data = self.serializer_class(batch_obj, many=True).data
-                return Response({'success': True, 'error': None, 'data': serializer_data}, status=status.HTTP_200_OK)
-            return Response({'success': False, 'error': 'type is mandatory', 'data': None},
-                            status=status.HTTP_400_BAD_REQUEST)
+            return Response({'success': True, 'error': None, 'data': serializer_data}, status=status.HTTP_200_OK)
+
         except Exception as e:
             return Response({'success': False, 'error': e.args[0], 'data': None},
                             status=status.HTTP_400_BAD_REQUEST)
 
 
-# class MoveToUnbrandedView(APIView):
-#     permission_classes = (permissions.AllowAny,)
-#
-#     def post(self, request, *args, **kwargs):
-#         try:
-#             data = request.data
-#             serializer_data = MoveToUnbrandedSerializer(data=data, many=True)
-#             if serializer_data.is_valid(raise_exception=True):
-#                 serializer_data.save()
-#                 return Response({'success': True, 'error': None, 'data': serializer_data}, status=status.HTTP_200_OK)
-#
-#         except Exception as e:
-#             return Response({'success': False, 'error': e.args[0], 'data': None},
-#                             status=status.HTTP_400_BAD_REQUEST)
+class MoveToUnbrandedView(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request, *args, **kwargs):
+        try:
+            data = request.data
+            serializer_data = MoveToUnbrandedSerializer(data=data, many=True)
+            if serializer_data.is_valid(raise_exception=True):
+                serializer_data.save()
+                return Response({'success': True, 'error': None, 'data': serializer_data}, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({'success': False, 'error': e.args[0], 'data': None},
+                            status=status.HTTP_400_BAD_REQUEST)
