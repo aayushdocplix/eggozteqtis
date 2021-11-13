@@ -347,7 +347,7 @@ class MoveToUnbrandedView(APIView):
             serializer_data = MoveToUnbrandedSerializer(data=data, many=True)
             if serializer_data.is_valid(raise_exception=True):
                 serializer_data.save()
-                return Response({'success': True, 'error': None, 'data': serializer_data}, status=status.HTTP_200_OK)
+                return Response({'success': True, 'error': None}, status=status.HTTP_200_OK)
 
         except Exception as e:
             return Response({'success': False, 'error': e.args[0], 'data': None},
