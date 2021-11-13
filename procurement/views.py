@@ -107,14 +107,14 @@ class ProcurementPerWarehouseView(viewsets.ModelViewSet):
 
 
 class EggsInView(viewsets.ModelViewSet):
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.AllowAny,)
     queryset = EggsIn.objects.all().order_by('-id')
     pagination_class = Pagination
     serializer_class = EggsInSerializers
 
 
 class EggQualityCheckView(viewsets.ModelViewSet):
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.AllowAny,)
     queryset = EggQualityCheck.objects.all().order_by('-id')
     pagination_class = Pagination
     serializer_class = EggQualityCheckSerializer
